@@ -2,10 +2,11 @@ print("Xin chào ThingsBoard")
 import paho.mqtt.client as mqttclient
 import time
 import json
+import requests
 
 BROKER_ADDRESS = "demo.thingsboard.io"
 PORT = 1883
-THINGS_BOARD_ACCESS_TOKEN = ""
+THINGS_BOARD_ACCESS_TOKEN = "UiMY0C2xWxTiuwDok4x1"
 
 
 def subscribed(client, userdata, mid, granted_qos):
@@ -42,12 +43,15 @@ client.loop_start()
 client.on_subscribe = subscribed
 client.on_message = recv_message
 
+response=requests.get("http://ip-api.com/json/14.236.208.128").json()
+longitude=response['lon']
+latitude=response['lat']
 temp = 30
 humi = 50
 light_intesity = 100
 counter = 0
 while True:
-    collect_data = {'temperature': temp, 'humidity': humi, 'light':light_intesity}
+    collect_data = {'temperature': temp, 'humidity': humi, 'light':light_intesity, 'longitude':longitude, 'latitude':latitude}
     temp += 1
     humi += 1
     light_intesity += 1
